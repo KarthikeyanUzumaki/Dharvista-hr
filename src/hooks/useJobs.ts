@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { mockJobs, Job as MockJob } from "@/mock/jobs";
 
 export interface Job {
   id: string;
@@ -14,14 +14,20 @@ export function useJobs() {
   return useQuery({
     queryKey: ["jobs"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("jobs")
-        .select("*")
-        .eq("is_active", true)
-        .order("created_at", { ascending: false });
+      // Transform mock data to match the Job interface
+      const jobs: Job[] = mockJobs
+        .filter((job: MockJob) => job.is_active)
+        .map((job: MockJob, index: number) => ({
+          id: job.id,
+          title: job.title,
+          location: job.location,
+          description: job.description,
+          is_active: job.is_active,
+          created_at: new Date(Date.now() - index * 86400000).toISOString(), // Stagger dates for sorting
+        }))
+        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
-      if (error) throw error;
-      return data as Job[];
+      return jobs;
     },
   });
 }
