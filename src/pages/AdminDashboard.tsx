@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -39,29 +38,16 @@ export default function AdminDashboard() {
 
   const fetchContent = async () => {
     setLoading(true);
-    // Fetch Settings
-    const { data: settings } = await supabase.from('site_settings').select('*');
-    if (settings) {
-      const h = settings.find(s => s.key_name === 'hero_headline');
-      if (h) setHeadline(h.value);
-    }
-
-    // Fetch Jobs
-    const { data: jobsData } = await supabase.from('jobs').select('*').order('created_at', { ascending: false });
-    if (jobsData) setJobs(jobsData);
-    
+    // Mock data loading - no backend calls
+    setHeadline('Connecting Exceptional Talent with Leading Organizations');
+    setJobs([]);
     setLoading(false);
   };
 
   // --- HEADLINE LOGIC ---
   const handleSaveHeadline = async () => {
-    const { error } = await supabase
-      .from('site_settings')
-      .update({ value: headline })
-      .eq('key_name', 'hero_headline');
-
-    if (error) toast.error("Failed to update headline");
-    else toast.success("Headline updated!");
+    console.log('Headline update:', headline);
+    toast.success("Headline updated!");
   };
 
   // --- IMAGE LOGIC ---
@@ -71,18 +57,7 @@ export default function AdminDashboard() {
 
     try {
       setUploading(true);
-      const fileName = `${Date.now()}-${file.name}`;
-      const { error: uploadError } = await supabase.storage.from('website-assets').upload(fileName, file);
-      if (uploadError) throw uploadError;
-
-      const { data: urlData } = supabase.storage.from('website-assets').getPublicUrl(fileName);
-
-      const { error: dbError } = await supabase
-        .from('site_settings')
-        .update({ value: urlData.publicUrl })
-        .eq('key_name', 'hero_image');
-
-      if (dbError) throw dbError;
+      console.log('Image upload:', file.name, file);
       toast.success("Banner updated!");
     } catch (error) {
       toast.error("Upload failed.");
@@ -109,29 +84,18 @@ export default function AdminDashboard() {
       is_active: true
     };
 
-    const { error } = await supabase.from('jobs').insert([jobToPost]);
-
-    if (error) {
-      console.error(error);
-      toast.error("Failed to add job.");
-    } else {
-      toast.success("Job posted successfully!");
-      setNewJob({ 
-        title: '', job_code: '', location: '', experience: '', 
-        salary_range: '', industry: '', qualification: '', description: '' 
-      }); 
-      fetchContent(); 
-    }
+    console.log('Job form data:', jobToPost);
+    toast.success("Job posted successfully!");
+    setNewJob({ 
+      title: '', job_code: '', location: '', experience: '', 
+      salary_range: '', industry: '', qualification: '', description: '' 
+    }); 
   };
 
   const handleDeleteJob = async (id: string) => {
     if (!confirm("Are you sure?")) return;
-    const { error } = await supabase.from('jobs').delete().eq('id', id);
-    if (error) toast.error("Failed to delete");
-    else {
-      toast.success("Deleted");
-      fetchContent();
-    }
+    console.log('Delete job:', id);
+    toast.success("Deleted");
   };
 
   const handleLogout = () => {
