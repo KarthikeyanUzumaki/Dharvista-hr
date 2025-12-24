@@ -1,23 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { mockSiteSettings } from "@/mock/siteSettings";
 
 export function useSiteSettings() {
   return useQuery({
     queryKey: ["site-settings"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("site_settings")
-        .select("key_name, value");
-
-      if (error) throw error;
-
-      // Convert array to object for easier access
-      const settings: Record<string, string> = {};
-      data?.forEach((item) => {
-        settings[item.key_name] = item.value;
-      });
-
-      return settings;
+      // Return mock site settings as Record<string, string> for compatibility
+      return mockSiteSettings as Record<string, string>;
     },
   });
 }
