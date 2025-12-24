@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { mockJobs, Job as MockJob } from "@/mock/jobs";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -30,16 +30,24 @@ export default function Jobs() {
   }, []);
 
   const fetchJobs = async () => {
-    // We fetch directly here to ensure we get ALL the new columns you added
-    const { data, error } = await supabase
-      .from("jobs")
-      .select("*")
-      .eq("is_active", true)
-      .order("created_at", { ascending: false });
+    // Transform mock data to match the expected Job interface
+    const transformedJobs: Job[] = mockJobs
+      .filter((job: MockJob) => job.is_active)
+      .map((job: MockJob) => ({
+        id: job.id,
+        title: job.title,
+        job_code: `JOB-${job.id.split('-')[1]?.toUpperCase() || '001'}`,
+        location: job.location,
+        experience: "3-5 years", // Default experience range
+        salary_range: job.salary,
+        industry: job.category,
+        qualification: "Bachelor's Degree", // Default qualification
+        description: job.description,
+        created_at: new Date().toISOString(), // Use current date as default
+      }))
+      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
-    if (error) console.error("Error fetching jobs:", error);
-    else setJobs(data || []);
-    
+    setJobs(transformedJobs);
     setLoading(false);
   };
 
