@@ -103,10 +103,8 @@ export default function Contact() {
                   <div>
                     <h3 className="font-semibold mb-1">Address</h3>
                     <p className="text-muted-foreground">
-                      123 Corporate Plaza<br />
-                      Canary Wharf<br />
-                      London E14 5AB<br />
-                      United Kingdom
+                      3/666, A-1, M.D.R Nagar East<br />
+                      Aruppukottai, Tamil Nadu
                     </p>
                   </div>
                 </div>
@@ -118,7 +116,7 @@ export default function Contact() {
                   <div>
                     <h3 className="font-semibold mb-1">Phone</h3>
                     <p className="text-muted-foreground">
-                      +44 (0) 20 7123 4567
+                      +91 80564 79722
                     </p>
                   </div>
                 </div>
@@ -130,7 +128,7 @@ export default function Contact() {
                   <div>
                     <h3 className="font-semibold mb-1">Email</h3>
                     <p className="text-muted-foreground">
-                      info@modelcorp.com
+                      hr@collabrate.com
                     </p>
                   </div>
                 </div>

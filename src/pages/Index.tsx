@@ -66,7 +66,7 @@ export default function Index() {
 
             ) : (
 
-              settings?.hero_headline || "Connecting Exceptional Talent with Leading Organizations"
+              settings?.hero_headline || "Connecting Tamil Nadu's Talent with Opportunities"
 
             )}
 
@@ -74,7 +74,7 @@ export default function Index() {
 
           <p className="text-lg md:text-xl text-primary-foreground/90 mb-8 max-w-2xl mx-auto animate-fade-in-delay">
 
-            Premier HR consultancy delivering bespoke recruitment solutions across the United Kingdom
+            Excellence in Local Recruitment from Aruppukottai to All of Tamil Nadu
 
           </p>
 
@@ -130,13 +130,9 @@ export default function Index() {
 
             <p className="text-lg text-muted-foreground leading-relaxed">
 
-              Model Corp is a distinguished HR consultancy with over two decades of experience
+              Collabrate is a recruitment agency headquartered in Aruppukottai, Virudhunagar District, Tamil Nadu.
 
-              in connecting exceptional professionals with industry-leading organizations.
-
-              Our bespoke approach to recruitment ensures that every placement is a perfect
-
-              match, fostering long-term success for both candidates and clients.
+              We specialize in bridging skilled talent from rural and semi-urban areas with opportunities across local and global industries.
 
             </p>
 
@@ -218,7 +214,7 @@ export default function Index() {
 
               <p className="text-muted-foreground text-sm">
 
-                Extensive network across multiple industries
+                Serving Fireworks, Textile, Agriculture, Printing, Matchbox, IT, and Medical industries
 
               </p>
 

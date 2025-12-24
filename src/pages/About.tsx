@@ -23,7 +23,7 @@ export default function About() {
             <div>
               <h2 className="text-3xl font-bold mb-6">Our Story</h2>
               <p className="text-muted-foreground mb-4 leading-relaxed">
-                Founded in London, Model Corp has grown to become one of the UK's most trusted 
+                Founded in London, Collabrate has grown to become one of the UK's most trusted 
                 HR consultancies. Our journey began with a simple belief: that the right talent, 
                 in the right role, can transform organizations.
               </p>

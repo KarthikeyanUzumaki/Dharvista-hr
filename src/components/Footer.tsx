@@ -7,7 +7,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="md:col-span-2">
-            <h3 className="text-2xl font-bold mb-4">Model Corp</h3>
+            <h3 className="text-2xl font-bold mb-4">Collabrate</h3>
             <p className="text-primary-foreground/80 max-w-md">
               A leading HR consultancy connecting exceptional talent with world-class organizations. 
               We believe in building lasting partnerships that drive success.
@@ -45,15 +45,16 @@ export function Footer() {
           <div>
             <h4 className="font-semibold mb-4">Contact</h4>
             <ul className="space-y-2 text-primary-foreground/80">
-              <li>London, United Kingdom</li>
-              <li>info@modelcorp.com</li>
-              <li>+44 (0) 20 7123 4567</li>
+              <li>3/666, A-1, M.D.R Nagar East<br />
+              Aruppukottai, Tamil Nadu</li>
+              <li>hr@collabrate.com</li>
+              <li>+91 80564 79722</li>
             </ul>
           </div>
         </div>
 
         <div className="border-t border-primary-foreground/20 mt-8 pt-8 text-center text-primary-foreground/60 text-sm">
-          <p>© {new Date().getFullYear()} Model Corp. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Collabrate. All rights reserved.</p>
         </div>
       </div>
     </footer>

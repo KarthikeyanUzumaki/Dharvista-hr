@@ -1,4 +1,4 @@
-# Model Corp Showcase 🚀
+# Collabrate Showcase 🚀
 
 **A lightweight careers site and admin dashboard built with React, TypeScript, Vite and Supabase.**  
 This app provides a public-facing job board and a simple admin dashboard for posting and managing job listings and site content.
@@ -20,7 +20,7 @@ This app provides a public-facing job board and a simple admin dashboard for pos
 ---
 
 ## Project Overview
-Model Corp Showcase is a simple but production-minded demonstration app that helps organizations publish and manage job vacancies and site content. It offers a public job board (browse and apply via Contact), plus an admin dashboard for posting jobs, uploading images, and editing small site settings.
+Collabrate Showcase is a simple but production-minded demonstration app that helps organizations publish and manage job vacancies and site content. It offers a public job board (browse and apply via Contact), plus an admin dashboard for posting jobs, uploading images, and editing small site settings.
 
 ---
 
