@@ -128,7 +128,7 @@ export default function Contact() {
                   <div>
                     <h3 className="font-semibold mb-1">Email</h3>
                     <p className="text-muted-foreground">
-                      hr@collabrate.com
+                      hr@ Dharvista.com
                     </p>
                   </div>
                 </div>

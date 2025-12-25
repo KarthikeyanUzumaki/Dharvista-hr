@@ -13,7 +13,7 @@ export const mockTestimonials: Testimonial[] = [
     name: "Rajesh Kumar",
     company: "Coimbatore Textiles Ltd.",
     rating: 5,
-    message: "Collabrate HR transformed our recruitment process. They found us exceptional talent from across Tamil Nadu, especially skilled workers for our textile manufacturing unit. Their understanding of local talent pools is unmatched. Highly recommended!",
+    message: " Dharvista HR transformed our recruitment process. They found us exceptional talent from across Tamil Nadu, especially skilled workers for our textile manufacturing unit. Their understanding of local talent pools is unmatched. Highly recommended!",
     photo_url: ""
   },
   {
@@ -21,7 +21,7 @@ export const mockTestimonials: Testimonial[] = [
     name: "Priya Venkatesh",
     company: "Chennai Tech Solutions",
     rating: 5,
-    message: "As a growing IT company, we needed quality software engineers quickly. Collabrate HR not only delivered but exceeded our expectations. They sourced candidates from Chennai, Coimbatore, and Madurai, helping us build a strong technical team. Excellent service!",
+    message: "As a growing IT company, we needed quality software engineers quickly.  Dharvista HR not only delivered but exceeded our expectations. They sourced candidates from Chennai, Coimbatore, and Madurai, helping us build a strong technical team. Excellent service!",
     photo_url: ""
   },
   {
@@ -29,7 +29,7 @@ export const mockTestimonials: Testimonial[] = [
     name: "Senthil Murugan",
     company: "Tamil Nadu Agro Industries",
     rating: 4,
-    message: "Working with Collabrate HR has been a game-changer for our agricultural operations. They connected us with experienced farm managers and agricultural engineers from rural Tamil Nadu. Their local expertise and network are truly valuable.",
+    message: "Working with  Dharvista HR has been a game-changer for our agricultural operations. They connected us with experienced farm managers and agricultural engineers from rural Tamil Nadu. Their local expertise and network are truly valuable.",
     photo_url: ""
   }
 ];

@@ -112,7 +112,7 @@ export function Navigation() {
 
             <span className="text-xl md:text-2xl font-bold text-primary tracking-tight">
 
-              Collabrate
+               Dharvista
 
             </span>
 

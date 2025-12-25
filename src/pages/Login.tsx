@@ -46,7 +46,7 @@ export default function Login() {
             <Lock className="w-6 h-6 text-blue-600" />
           </div>
           <CardTitle className="text-2xl font-bold text-slate-800">Admin Login</CardTitle>
-          <CardDescription>Access the Collabrate dashboard</CardDescription>
+          <CardDescription>Access the  Dharvista dashboard</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
