@@ -1,86 +1,100 @@
-import { MapPin, Briefcase, IndianRupee } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { MapPin, Briefcase, ArrowRight } from "lucide-react";
 import { useJobs } from "@/hooks/useJobs";
+import { Job } from "@/types";
 
 export default function LatestJobsSection() {
-  const { jobs } = useJobs();
+  const { jobs, isLoading } = useJobs();
 
-  // Take latest 6 jobs (already sorted by createdAt in store)
-  const latestJobs = jobs.slice(0, 6);
+  // 🟢 UPDATED: Show 4 jobs
+  const latestJobs = jobs
+    .filter(job => job.status === 'published')
+    .slice(0, 4);
+
+  if (isLoading) {
+    return <div className="py-20 text-center">Loading latest opportunities...</div>;
+  }
 
   return (
-    <section className="section-padding bg-secondary">
+    <section className="section-padding bg-background">
       <div className="container-wide">
-        {/* Section Header */}
+        
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Latest Job Openings
+            Latest Openings
           </h2>
-          <p className="text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Explore the most recent job opportunities across Tamil Nadu and take
-            the next step in your career with Dharvista.
+          <div className="w-20 h-1 bg-primary mx-auto mb-6" />
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Explore the newest opportunities in Tamil Nadu.
           </p>
         </div>
 
-        {/* Jobs Grid */}
-        {latestJobs.length === 0 ? (
-          <div className="text-center text-muted-foreground">
-            No job openings available right now.
-          </div>
-        ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {latestJobs.map((job) => (
-              <div
-                key={job.id}
-                className="
-                  group relative rounded-2xl border border-border bg-card
-                  p-8
-                  transition-all duration-300 ease-out
-                  hover:-translate-y-2 hover:scale-[1.03]
-                  hover:shadow-xl hover:border-primary/30
-                "
-              >
-                {/* Glow */}
-                <div className="absolute inset-0 rounded-2xl bg-primary/5 opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-100" />
-
-                {/* Content */}
-                <div className="relative z-10">
-                  <h3 className="text-xl font-semibold text-foreground mb-3">
-                    {job.title}
-                  </h3>
-
-                  <div className="space-y-2 mb-6">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <MapPin className="h-4 w-4 text-primary" />
-                      {job.location}
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Briefcase className="h-4 w-4 text-primary" />
-                      {job.category}
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <IndianRupee className="h-4 w-4 text-primary" />
-                      {job.salary}
-                    </div>
-                  </div>
-
-                  <Button asChild className="w-full">
-                    <Link to="/jobs">View Details</Link>
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* View All Jobs CTA */}
-        <div className="mt-16 text-center">
-          <Button asChild size="lg" variant="outline">
-            <Link to="/jobs">View All Job Openings</Link>
-          </Button>
+        {/* 🟢 UPDATED GRID: lg:grid-cols-4 (4 items in a row) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {latestJobs.map((job) => (
+            <JobCard key={job.id} job={job} />
+          ))}
         </div>
+
+        <div className="mt-12 text-center">
+          <Link to="/jobs">
+            <Button size="lg" variant="outline" className="border-primary/20 hover:bg-primary/5 text-foreground px-8">
+              View All Jobs <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </Link>
+        </div>
+
       </div>
     </section>
+  );
+}
+
+function JobCard({ job }: { job: Job }) {
+  return (
+    <Card className="flex flex-col h-full hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100 border-t-4 border-t-primary rounded-2xl overflow-hidden bg-white">
+      <CardHeader className="p-6 pb-4">
+        <div className="flex justify-between items-start">
+          <Badge variant="secondary" className="mb-2 bg-gray-100 text-gray-700 hover:bg-gray-200">{job.industry}</Badge>
+          {job.priority === 'urgent' && (
+            <Badge variant="destructive" className="text-xs">Urgent</Badge>
+          )}
+        </div>
+        <CardTitle className="text-xl line-clamp-1 text-gray-900" title={job.title}>
+          {job.title}
+        </CardTitle>
+      </CardHeader>
+      
+      <CardContent className="flex-1 space-y-4 p-6 pt-2">
+        <p className="text-gray-500 text-sm line-clamp-2 min-h-[40px]">
+          {job.description}
+        </p>
+        
+        <div className="space-y-2 text-xs text-gray-600">
+          <div className="flex items-center gap-3">
+            <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+              <MapPin className="h-3 w-3" />
+            </div>
+            {job.location}
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+              <Briefcase className="h-3 w-3" />
+            </div>
+            {job.experienceMin}-{job.experienceMax} Years Exp
+          </div>
+        </div>
+      </CardContent>
+
+      <CardFooter className="p-6 pt-0 mt-auto">
+        <Link to={`/jobs/${job.id}`} className="w-full">
+          <Button variant="outline" className="w-full text-primary hover:text-white hover:bg-primary border-primary/20 h-10 text-sm">
+            View Details
+          </Button>
+        </Link>
+      </CardFooter>
+    </Card>
   );
 }

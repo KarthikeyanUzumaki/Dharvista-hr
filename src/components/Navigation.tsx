@@ -33,6 +33,20 @@ export function Navigation() {
   const location = useLocation();
 
   const lastScrollY = useRef(0);
+  const headerRef = useRef<HTMLElement | null>(null);
+
+  // Keep CSS var for nav top to support sticky elements below header
+  useEffect(() => {
+    function updateNavTop() {
+      const h = headerRef.current?.offsetHeight ?? 64;
+      const topValue = isHidden ? '0px' : `${h}px`;
+      document.documentElement.style.setProperty('--nav-top', topValue);
+    }
+
+    updateNavTop();
+    window.addEventListener('resize', updateNavTop);
+    return () => window.removeEventListener('resize', updateNavTop);
+  }, [isHidden, isOpen]);
 
 
 
@@ -91,15 +105,11 @@ export function Navigation() {
   return (
 
     <header
-
+      ref={headerRef}
       className={cn(
-
         "fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border transition-transform duration-300",
-
         isHidden && "-translate-y-full"
-
       )}
-
     >
 
       <nav className="container-wide">

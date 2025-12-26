@@ -1,44 +1,59 @@
-export interface Job {
-  id: string;
-  title: string;
-  location: string;
-  salary: string;
-  category: string;
-  description: string;
-  is_active: boolean;
-  application_form_url: string;
-}
+// src/mock/jobs.ts
+import { Job } from '../types';
 
-export const mockJobs: Job[] = [
+export const MOCK_JOBS: Job[] = [
   {
     id: "job-001",
-    title: "Senior Software Engineer",
-    location: "Chennai, Tamil Nadu",
-    salary: "₹8,00,000 - ₹12,00,000 per annum",
-    category: "Information Technology",
-    description: "We are seeking an experienced Senior Software Engineer to join our dynamic team in Chennai. The ideal candidate will have 5+ years of experience in full-stack development, proficiency in React, Node.js, and cloud technologies. You will be responsible for designing and developing scalable web applications, collaborating with cross-functional teams, and mentoring junior developers.",
-    is_active: true,
-    application_form_url: "https://example.com/apply/job-001"
+    title: "HR Executive",
+    location: "Aruppukottai",
+    industry: "Human Resources",
+    description: "We are seeking a dedicated HR Executive to manage recruitment processes, employee relations, and payroll administration. You will be the primary point of contact for all HR-related queries.",
+    eligibility: "MBA in HR preferred. Must speak Tamil and English fluently. 1 year experience in manufacturing sector is a plus.",
+    salaryMin: 15000,
+    salaryMax: 25000,
+    salaryCurrency: "INR",
+    experienceMin: 0,
+    experienceMax: 2,
+    type: 'full-time',
+    status: 'published',
+    priority: 'normal',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
   {
     id: "job-002",
-    title: "Textile Production Manager",
-    location: "Coimbatore, Tamil Nadu",
-    salary: "₹6,00,000 - ₹9,00,000 per annum",
-    category: "Manufacturing",
-    description: "Join our leading textile manufacturing company in Coimbatore as a Production Manager. You will oversee daily production operations, ensure quality standards, manage production schedules, and lead a team of production staff. The role requires 4+ years of experience in textile manufacturing, strong leadership skills, and knowledge of modern textile machinery and processes.",
-    is_active: true,
-    application_form_url: "https://example.com/apply/job-002"
+    title: "Textile Supervisor",
+    location: "Virudhunagar",
+    industry: "Textile Manufacturing",
+    description: "Oversee daily floor operations, ensure quality control of fabrics, and manage a team of 20+ workers. Safety compliance is a must.",
+    eligibility: "Diploma in Textile Technology or equivalent experience. Must be willing to work in shifts.",
+    salaryMin: 20000,
+    salaryMax: 40000,
+    salaryCurrency: "INR",
+    experienceMin: 3,
+    experienceMax: 5,
+    type: 'full-time',
+    status: 'published',
+    priority: 'urgent',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
   {
     id: "job-003",
-    title: "Automotive Quality Assurance Engineer",
-    location: "Chennai, Tamil Nadu",
-    salary: "₹7,00,000 - ₹10,00,000 per annum",
-    category: "Automotive",
-    description: "We are looking for a Quality Assurance Engineer to join our automotive manufacturing facility in Chennai. The candidate should have 3+ years of experience in automotive quality control, knowledge of ISO/TS standards, and expertise in quality testing procedures. Responsibilities include conducting quality inspections, maintaining quality documentation, and implementing continuous improvement initiatives.",
-    is_active: true,
-    application_form_url: "https://example.com/apply/job-003"
+    title: "Senior Software Engineer",
+    location: "Chennai",
+    industry: "IT Services",
+    description: "Develop scalable web applications using React and Node.js. Mentor junior developers and participate in code reviews.",
+    eligibility: "B.E./B.Tech in CS/IT. Strong proficiency in JavaScript/TypeScript.",
+    salaryMin: 800000,
+    salaryMax: 1200000,
+    salaryCurrency: "INR",
+    experienceMin: 5,
+    experienceMax: 8,
+    type: 'full-time',
+    status: 'published',
+    priority: 'featured',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   }
 ];
-

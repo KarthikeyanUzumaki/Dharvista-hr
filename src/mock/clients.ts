@@ -1,39 +1,18 @@
 export interface Client {
   id: string;
   name: string;
-  logo_url: string;
+  industry: string;
+  logo: string; // 🟢 New field for future images
 }
 
-export const mockClients: Client[] = [
-  {
-    id: "client-001",
-    name: "Coimbatore Textiles Ltd.",
-    logo_url: ""
-  },
-  {
-    id: "client-002",
-    name: "Chennai Tech Solutions",
-    logo_url: ""
-  },
-  {
-    id: "client-003",
-    name: "Tamil Nadu Agro Industries",
-    logo_url: ""
-  },
-  {
-    id: "client-004",
-    name: "Madurai Manufacturing Corp",
-    logo_url: ""
-  },
-  {
-    id: "client-005",
-    name: "Salem IT Services",
-    logo_url: ""
-  },
-  {
-    id: "client-006",
-    name: "Tirupur Garment Exports",
-    logo_url: ""
-  }
+export const MOCK_CLIENTS: Client[] = [
+  { id: '1', name: 'Bunty', industry: 'Retail', logo: "" },
+  { id: '2', name: 'Vwin Notebooks', industry: 'Manufacturing', logo: "" },
+  { id: '3', name: 'Velacherry Venkateshwara', industry: 'Retail', logo: "" },
+  { id: '4', name: 'Mutha Opticals', industry: 'Healthcare', logo: "" },
+  { id: '5', name: 'Barbikan', industry: 'Wholesale', logo: "" },
+  { id: '6', name: 'MP Enterprises', industry: 'General', logo: "" },
+  { id: '7', name: 'Glitz', industry: 'Lifestyle', logo: "" },
+  { id: '8', name: 'AGC', industry: 'Corporate', logo: "" },
+  { id: '9', name: 'Info Solutions', industry: 'IT Services', logo: "" },
 ];
-

@@ -1,73 +1,101 @@
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { ArrowRight, Users, Target, Award, Briefcase } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
 import IndustriesSection from "@/components/sections/IndustriesSection";
 import LatestJobsSection from "@/components/sections/LatestJobsSection";
+import ClienteleSection from "@/components/sections/ClienteleSection";
 
 export default function Index() {
-  const { data: settings, isLoading } = useSiteSettings();
-
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
-        {isLoading ? (
-          <Skeleton className="absolute inset-0" />
-        ) : (
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat animate-zoom-slow"
-            style={{
-              backgroundImage: `url(${
-                settings?.hero_image ||
-                "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80"
-              })`,
-            }}
-          >
-            <div className="absolute inset-0 bg-primary/70" />
+      {/* 🟢 HERO SECTION: Radial Gradient + Dot Pattern */}
+      <section className="relative min-h-[90vh] flex flex-col items-center justify-center bg-primary text-primary-foreground overflow-hidden pt-20 pb-16">
+        
+        {/* Background Effects */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary via-primary to-[#051530]" />
+        <div className="absolute inset-0 opacity-[0.15]" style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-[100px] pointer-events-none" />
+
+        <div className="relative z-10 container-wide text-center">
+          
+          {/* Main Headline */}
+          <div className="opacity-0 animate-slide-up" style={{ animationDelay: "100ms" }}>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 max-w-5xl mx-auto tracking-tight leading-tight drop-shadow-lg">
+              Building Bridges to Professional Dreams
+            </h1>
           </div>
-        )}
 
-        <div className="relative z-10 container-wide text-center text-primary-foreground py-20">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-slide-up max-w-4xl mx-auto text-balance">
-            {isLoading ? (
-              <Skeleton className="h-16 w-full max-w-2xl mx-auto bg-primary-foreground/20" />
-            ) : (
-              settings?.hero_headline ||
-              "Connecting Tamil Nadu's Talent with Opportunities"
-            )}
-          </h1>
+          {/* Sub-headline */}
+          <div className="opacity-0 animate-fade-in" style={{ animationDelay: "200ms" }}>
+            <p className="text-xl md:text-2xl text-primary-foreground/90 font-light mb-6 max-w-3xl mx-auto">
+              Empowering Talent, Connecting Opportunities. <br className="hidden md:block" />
+              Your Trusted HR Partner in South Tamil Nadu.
+            </p>
+          </div>
 
-          <p className="text-lg md:text-xl text-primary-foreground/90 mb-8 max-w-2xl mx-auto animate-fade-in-delay">
-            Excellence in Local Recruitment from Aruppukottai to All of Tamil Nadu
-          </p>
+          {/* Description */}
+          <div className="opacity-0 animate-fade-in" style={{ animationDelay: "300ms" }}>
+            <p className="text-base md:text-lg text-primary-foreground/70 mb-10 max-w-3xl mx-auto leading-relaxed">
+              Premier recruitment experts delivering tailored placement services. 
+              Specializing in talent sourcing, skill enhancement training, resume optimization, 
+              and interview coaching.
+            </p>
+          </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-delay">
-            <Button asChild variant="hero" size="xl">
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20 opacity-0 animate-fade-in" style={{ animationDelay: "400ms" }}>
+            <Button asChild size="xl" className="bg-white text-primary hover:bg-gray-100 font-bold text-lg px-8 h-14 border-none shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1">
               <Link to="/jobs">
-                View Opportunities
-                <ArrowRight className="ml-2 h-5 w-5" />
+                Start Your Journey
               </Link>
             </Button>
 
             <Button
               asChild
-              variant="outline-primary"
+              variant="outline"
               size="xl"
-              className="bg-primary-foreground/10 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary"
+              className="bg-transparent border-2 border-white/20 text-white hover:bg-white/10 hover:text-white font-semibold text-lg px-8 h-14 backdrop-blur-sm"
             >
               <Link to="/contact">Get in Touch</Link>
             </Button>
           </div>
+
+          {/* STATS BAR */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto border-t border-white/10 pt-12 opacity-0 animate-slide-up" style={{ animationDelay: "500ms" }}>
+            
+            <div className="text-center">
+              <div className="text-5xl md:text-6xl font-bold mb-2 tracking-tighter drop-shadow-md">100+</div>
+              <div className="text-xs md:text-sm font-semibold tracking-[0.2em] text-primary-foreground/60 uppercase">
+                Successful Placements
+              </div>
+            </div>
+
+            <div className="text-center">
+              <div className="text-5xl md:text-6xl font-bold mb-2 tracking-tighter drop-shadow-md">17</div>
+              <div className="text-xs md:text-sm font-semibold tracking-[0.2em] text-primary-foreground/60 uppercase">
+                Clients Served
+              </div>
+            </div>
+
+            <div className="text-center">
+              <div className="text-5xl md:text-6xl font-bold mb-2 tracking-tighter drop-shadow-md">2025</div>
+              <div className="text-xs md:text-sm font-semibold tracking-[0.2em] text-primary-foreground/60 uppercase">
+                Established
+              </div>
+            </div>
+
+          </div>
+
         </div>
       </section>
   
+      {/* 🟢 LATEST OPENINGS (4 Column Grid, White Background) */}
       <LatestJobsSection />
       
-      {/* Who We Are Section */}
-      <section className="section-padding bg-background">
+      {/* 🟢 WHO WE ARE (4 Column Grid, Grey Background) */}
+      <section className="section-padding bg-gray-100">
         <div className="container-wide">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -85,55 +113,48 @@ export default function Index() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
+          {/* Updated Grid to 4 Columns (lg:grid-cols-4) and Card Style (p-10, shadow-xl) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              {
-                title: "Expert Team",
-                desc: "Seasoned professionals with deep industry knowledge",
-                icon: Users,
+              { 
+                title: "Expert Team", 
+                desc: "Seasoned professionals with deep industry knowledge", 
+                icon: Users 
               },
-              {
-                title: "Precision Matching",
-                desc: "Tailored solutions for perfect candidate-client fit",
-                icon: Target,
+              { 
+                title: "Precision Matching", 
+                desc: "Tailored solutions for perfect candidate-client fit", 
+                icon: Target 
               },
-              {
-                title: "Proven Results",
-                desc: "Track record of successful placements across sectors",
-                icon: Award,
+              { 
+                title: "Proven Results", 
+                desc: "Track record of successful placements across sectors", 
+                icon: Award 
               },
-              {
-                title: "Industry Reach",
-                desc: "Serving Fireworks, Textile, Agriculture, Printing, Matchbox, IT, and Medical industries",
-                icon: Briefcase,
+              { 
+                title: "Industry Reach", 
+                desc: "Serving Fireworks, Textile, IT, and Medical industries", 
+                icon: Briefcase 
               },
             ].map((item, index) => {
               const Icon = item.icon;
               return (
                 <div
                   key={index}
-                  className="
-                    group relative rounded-2xl border border-border bg-card
-                    p-10 text-center
-                    transition-all duration-300 ease-out
-                    hover:-translate-y-2 hover:scale-[1.04]
-                    hover:shadow-xl hover:border-primary/30
-                  "
+                  className="opacity-0 animate-slide-up group relative rounded-2xl border border-border bg-white p-10 text-center transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl"
+                  style={{ animationDelay: `${100 + index * 75}ms` }}
                 >
-                  {/* Glow */}
-                  <div className="absolute inset-0 rounded-2xl bg-primary/5 opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-100" />
-
-                  {/* Icon */}
+                  {/* Icon Circle */}
                   <div className="relative z-10 mb-6 flex justify-center">
-                    <div className="w-18 h-18 rounded-full bg-primary/10 flex items-center justify-center transition-all duration-300 group-hover:bg-primary group-hover:scale-110">
-                      <Icon className="h-9 w-9 text-primary group-hover:text-primary-foreground transition-colors duration-300" />
+                    <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center transition-all duration-300 group-hover:bg-primary group-hover:scale-110">
+                      <Icon className="h-10 w-10 text-primary group-hover:text-primary-foreground transition-colors duration-300" />
                     </div>
                   </div>
-
-                  <h3 className="relative z-10 font-semibold text-xl mb-3">
+                  
+                  <h3 className="relative z-10 font-bold text-xl mb-3 text-gray-900">
                     {item.title}
                   </h3>
-                  <p className="relative z-10 text-muted-foreground text-base leading-relaxed">
+                  <p className="relative z-10 text-gray-500 text-base leading-relaxed">
                     {item.desc}
                   </p>
                 </div>
@@ -143,24 +164,30 @@ export default function Index() {
         </div>
       </section>
 
+      {/* 🟢 INDUSTRIES (4 Column Grid, White Background) */}
       <IndustriesSection />
 
+      {/* 🟢 TRUSTED BY (4 Column Grid, Grey Background) */}
+      <ClienteleSection />
+      
       {/* CTA Section */}
       <section className="section-padding bg-secondary">
         <div className="container-wide text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Ready to Find Your Next Opportunity?
-          </h2>
-          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Browse our current openings or get in touch with our team to discuss
-            your career aspirations.
-          </p>
-          <Button asChild size="lg">
-            <Link to="/jobs">
-              Explore Careers
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </Button>
+          <div className="opacity-0 animate-fade-in" style={{ animationDelay: "150ms" }}>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Ready to Find Your Next Opportunity?
+            </h2>
+            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Browse our current openings or get in touch with our team to discuss
+              your career aspirations.
+            </p>
+            <Button asChild size="lg">
+              <Link to="/jobs">
+                Explore Careers
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
+          </div>
         </div>
       </section>
     </Layout>

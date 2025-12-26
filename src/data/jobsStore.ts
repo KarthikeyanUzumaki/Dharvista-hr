@@ -4,6 +4,7 @@ export type Job = {
     location: string;
     category: string;
     salary: string;
+    experience: string; // ✅ ADDED
     createdAt: number;
   };
   
@@ -13,16 +14,18 @@ export type Job = {
       title: "HR Executive",
       location: "Aruppukottai",
       category: "Human Resources",
-      salary: "₹15,000 – ₹25,000",
-      createdAt: Date.now() - 600000,
+      salary: "₹15k - ₹25k",
+      experience: "0-2 Years",
+      createdAt: Date.now() - 100000,
     },
     {
       id: "2",
       title: "Textile Supervisor",
       location: "Virudhunagar",
       category: "Textile Manufacturing",
-      salary: "₹18,000 – ₹30,000",
-      createdAt: Date.now() - 500000,
+      salary: "₹20k - ₹40k",
+      experience: "3-5 Years",
+      createdAt: Date.now() - 50000,
     },
   ];
   

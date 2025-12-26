@@ -1,36 +1,35 @@
 export interface Testimonial {
   id: string;
   name: string;
+  role: string;
   company: string;
+  content: string;
   rating: number;
-  message: string;
-  photo_url: string;
 }
 
-export const mockTestimonials: Testimonial[] = [
+export const MOCK_TESTIMONIALS: Testimonial[] = [
   {
-    id: "testimonial-001",
-    name: "Rajesh Kumar",
-    company: "Coimbatore Textiles Ltd.",
+    id: '1',
+    name: 'Rajesh Kumar',
+    role: 'HR Manager',
+    company: 'Madurai Textiles',
+    content: 'Dharvista helped us find skilled loom operators within a week. Their understanding of local talent is unmatched.',
     rating: 5,
-    message: " Dharvista HR transformed our recruitment process. They found us exceptional talent from across Tamil Nadu, especially skilled workers for our textile manufacturing unit. Their understanding of local talent pools is unmatched. Highly recommended!",
-    photo_url: ""
   },
   {
-    id: "testimonial-002",
-    name: "Priya Venkatesh",
-    company: "Chennai Tech Solutions",
+    id: '2',
+    name: 'S. Lakshmi',
+    role: 'Job Seeker',
+    company: 'Placed at TechSolutions',
+    content: 'I was looking for a job in Chennai while living in Virudhunagar. They guided me through the interview and I got the offer!',
     rating: 5,
-    message: "As a growing IT company, we needed quality software engineers quickly.  Dharvista HR not only delivered but exceeded our expectations. They sourced candidates from Chennai, Coimbatore, and Madurai, helping us build a strong technical team. Excellent service!",
-    photo_url: ""
   },
   {
-    id: "testimonial-003",
-    name: "Senthil Murugan",
-    company: "Tamil Nadu Agro Industries",
+    id: '3',
+    name: 'Anand P.',
+    role: 'Director',
+    company: 'Sivakasi Fireworks',
+    content: 'Professional, ethical, and fast. They handled our bulk hiring requirements very efficiently during the festival season.',
     rating: 4,
-    message: "Working with  Dharvista HR has been a game-changer for our agricultural operations. They connected us with experienced farm managers and agricultural engineers from rural Tamil Nadu. Their local expertise and network are truly valuable.",
-    photo_url: ""
-  }
+  },
 ];
-

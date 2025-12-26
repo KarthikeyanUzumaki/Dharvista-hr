@@ -1,25 +1,19 @@
-import { ReactNode, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+// src/components/ProtectedRoute.tsx
 
-interface ProtectedRouteProps {
-  children: ReactNode;
-}
+import { Navigate, Outlet } from "react-router-dom";
 
-export function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const navigate = useNavigate();
+const ProtectedRoute = () => {
+  // 1. Check if the user has the admin token
+  const token = localStorage.getItem("admin_token");
 
-  useEffect(() => {
-    const session = localStorage.getItem("modelcorp_session");
-    if (!session) {
-      navigate("/login");
-    }
-  }, [navigate]);
-
-  const session = localStorage.getItem("modelcorp_session");
-  
-  if (!session) {
-    return null;
+  // 2. If no token is found, kick them out to the login page immediately.
+  // "replace" ensures they can't click the browser Back button to return here.
+  if (!token) {
+    return <Navigate to="/login" replace />;
   }
 
-  return <>{children}</>;
-}
+  // 3. If token exists, render the child route (the AdminDashboard).
+  return <Outlet />;
+};
+
+export default ProtectedRoute;
