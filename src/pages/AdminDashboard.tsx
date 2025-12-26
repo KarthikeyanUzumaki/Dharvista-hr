@@ -15,7 +15,7 @@ import { LayoutDashboard, Users, Plus, Trash2, LogOut, FileText, Flame } from "l
 // Hooks & Types
 import { useJobs } from "@/hooks/useJobs";
 import { useApplicants } from "@/hooks/useApplicants";
-import { ApplicantStatus } from "@/types";
+import { ApplicantStatus, JobPriority, JobType } from "@/types";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -25,9 +25,7 @@ export default function AdminDashboard() {
   const { jobs, createJob, isLoading: jobsLoading, deleteJob } = useJobs();
   const { applicants, isLoading: appLoading, updateApplicantStatus } = useApplicants();
 
-  // 🔒 AUTH CHECK (Backup Safety)
-  // Even though ProtectedRoute handles this, we keep this double-check 
-  // to prevent the dashboard from ever rendering without a token.
+  // 🔒 AUTH CHECK
   const token = localStorage.getItem("admin_token");
 
   useEffect(() => {
@@ -39,7 +37,6 @@ export default function AdminDashboard() {
     navigate("/");
   };
 
-  // If no token, return null to avoid "Flash of Content"
   if (!token) return null;
 
   return (
@@ -114,6 +111,8 @@ export default function AdminDashboard() {
 // 🔹 SUB-COMPONENT: JOBS VIEW
 // ==========================================
 function JobsView({ jobs, createJob, deleteJob, loading }: any) {
+  
+  // ✅ Updated State to match your 'Job' interface
   const [newJob, setNewJob] = useState({
     title: "",
     location: "",
@@ -124,13 +123,13 @@ function JobsView({ jobs, createJob, deleteJob, loading }: any) {
     experienceMax: "",
     eligibility: "",
     description: "",
-    jobType: "Full Time", // Default
-    isUrgent: false       // Default
+    type: "full-time" as JobType,      // Default value matches JobType type
+    priority: "normal" as JobPriority, // Default value matches JobPriority type
+    status: "published" 
   });
 
   const handleAddJob = async () => {
     if (!newJob.title || !newJob.location) {
-      // You can replace this alert with: toast({ title: "Error", description: "Title required" })
       alert("Title and Location are required"); 
       return;
     }
@@ -142,10 +141,16 @@ function JobsView({ jobs, createJob, deleteJob, loading }: any) {
         salaryMin: "", salaryMax: "", 
         experienceMin: "", experienceMax: "", 
         eligibility: "", description: "",
-        jobType: "Full Time",
-        isUrgent: false
+        type: "full-time",
+        priority: "normal",
+        status: "published"
       });
     }
+  };
+
+  // Helper to display "full-time" as "Full Time"
+  const formatJobType = (type: string) => {
+    return type?.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
   };
 
   if (loading) return <div className="p-10 text-center">Loading jobs...</div>;
@@ -172,20 +177,20 @@ function JobsView({ jobs, createJob, deleteJob, loading }: any) {
               onChange={(e) => setNewJob({ ...newJob, location: e.target.value })} 
             />
             
-            {/* Job Type Dropdown */}
+            {/* ✅ Updated Select for 'type' */}
             <Select 
-              value={newJob.jobType} 
-              onValueChange={(val) => setNewJob({...newJob, jobType: val})}
+              value={newJob.type} 
+              onValueChange={(val) => setNewJob({...newJob, type: val as JobType})}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Job Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Full Time">Full Time</SelectItem>
-                <SelectItem value="Part Time">Part Time</SelectItem>
-                <SelectItem value="Remote">Remote</SelectItem>
-                <SelectItem value="Contract">Contract</SelectItem>
-                <SelectItem value="Internship">Internship</SelectItem>
+                <SelectItem value="full-time">Full Time</SelectItem>
+                <SelectItem value="part-time">Part Time</SelectItem>
+                <SelectItem value="contract">Contract</SelectItem>
+                <SelectItem value="internship">Internship</SelectItem>
+                <SelectItem value="freelance">Freelance</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -241,14 +246,17 @@ function JobsView({ jobs, createJob, deleteJob, loading }: any) {
           />
 
           <div className="flex items-center justify-between">
-            {/* Urgent Checkbox */}
+            {/* ✅ Updated Checkbox for 'priority' */}
             <div className="flex items-center space-x-2 border px-4 py-2 rounded-md bg-gray-50">
                 <input 
                     type="checkbox" 
                     id="urgentParams"
                     className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                    checked={newJob.isUrgent}
-                    onChange={(e) => setNewJob({...newJob, isUrgent: e.target.checked})}
+                    checked={newJob.priority === 'urgent'}
+                    onChange={(e) => setNewJob({
+                        ...newJob, 
+                        priority: e.target.checked ? 'urgent' : 'normal'
+                    })}
                 />
                 <label htmlFor="urgentParams" className="text-sm font-medium text-gray-700 cursor-pointer select-none">
                     Mark as Urgent Hiring
@@ -276,8 +284,8 @@ function JobsView({ jobs, createJob, deleteJob, loading }: any) {
                   <div className="flex items-center gap-2">
                     <h3 className="font-semibold text-gray-900 text-lg">{job.title}</h3>
                     
-                    {/* Urgent Badge */}
-                    {job.isUrgent && (
+                    {/* ✅ Check job.priority instead of isUrgent */}
+                    {job.priority === 'urgent' && (
                         <Badge variant="destructive" className="flex items-center gap-1 text-[10px] px-1.5 h-5">
                             <Flame className="w-3 h-3" /> Urgent
                         </Badge>
@@ -290,12 +298,12 @@ function JobsView({ jobs, createJob, deleteJob, loading }: any) {
                   <p className="text-sm text-gray-500">{job.industry} · {job.location}</p>
                   
                   <div className="text-sm text-gray-600 flex flex-wrap gap-2 mt-2">
-                    {/* Job Type Badge */}
+                    {/* ✅ Check job.type */}
                     <span className="bg-purple-50 text-purple-700 px-2 py-1 rounded text-xs border border-purple-200">
-                       {job.jobType || "Full Time"}
+                       {formatJobType(job.type || "full-time")}
                     </span>
                     <span className="bg-green-50 text-green-700 px-2 py-1 rounded text-xs border border-green-200">
-                      ₹{job.salaryMin?.toLocaleString()} - ₹{job.salaryMax?.toLocaleString()}
+                      ₹{Number(job.salaryMin)?.toLocaleString()} - ₹{Number(job.salaryMax)?.toLocaleString()}
                     </span>
                     <span className="bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs border border-blue-200">
                       Exp: {job.experienceMin} - {job.experienceMax} Yrs

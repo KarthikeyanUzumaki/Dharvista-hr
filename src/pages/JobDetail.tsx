@@ -1,161 +1,210 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { 
+  MapPin, 
+  Briefcase, 
+  Clock, 
+  Flame, 
+  ArrowLeft, 
+  CheckCircle2, 
+  Banknote,
+  Building2,
+  Calendar
+} from "lucide-react";
 import { useJobs } from "@/hooks/useJobs";
-import { ArrowLeft, MapPin, Building2, Clock, DollarSign, CheckCircle2, Calendar } from "lucide-react";
+import { Job } from "@/types";
 
 export default function JobDetail() {
   const { id } = useParams();
-  const navigate = useNavigate();
-  const { jobs, isLoading } = useJobs();
+  const { jobs } = useJobs();
+  const [job, setJob] = useState<Job | null>(null);
 
-  const job = jobs.find((j) => j.id === id);
-
-  const relatedJobs = jobs
-    .filter((j) => j.industry === job?.industry && j.id !== job?.id)
-    .slice(0, 2);
-
-  if (isLoading) {
-    return (
-      <Layout>
-        <div className="flex h-screen items-center justify-center">
-          <p className="text-muted-foreground">Loading job details...</p>
-        </div>
-      </Layout>
-    );
-  }
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const foundJob = jobs.find((j) => j.id === id);
+    if (foundJob) setJob(foundJob);
+  }, [id, jobs]);
 
   if (!job) {
     return (
       <Layout>
-        <div className="py-20 text-center">
-          <h2 className="text-2xl font-bold mb-4">Job Not Found</h2>
-          <p className="text-muted-foreground mb-6">The position you are looking for may have been closed.</p>
-          <Button onClick={() => navigate("/jobs")}>Browse All Jobs</Button>
+        <div className="min-h-screen flex items-center justify-center">
+          <p className="text-gray-500">Loading job details...</p>
         </div>
       </Layout>
     );
   }
 
+  const formatJobType = (type: string) => {
+    return type?.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  };
+
   return (
     <Layout>
-      <div className="bg-gray-50 min-h-screen pb-20">
+      <div className="min-h-screen bg-gray-50 pb-20">
         
-        {/* 🟢 HEADER: Using Primary Theme Color */}
-        <div className="bg-primary py-12 text-primary-foreground">
-          <div className="container mx-auto px-4 max-w-5xl">
-            <Link to="/jobs" className="text-primary-foreground/80 hover:text-primary-foreground flex items-center gap-2 mb-6 transition-colors w-fit">
-              <ArrowLeft className="w-4 h-4" /> Back to Jobs
-            </Link>
+        {/* 🟢 1. HEADER: Gradient + Dot Pattern + Glow */}
+        <div className="relative bg-primary text-primary-foreground pt-28 pb-12 px-4 shadow-md overflow-hidden">
             
-            <div className="flex flex-col md:flex-row justify-between items-start gap-6">
-              <div>
-                <div className="flex items-center gap-3 mb-2">
-                  <h1 className="text-3xl md:text-4xl font-bold text-primary-foreground">{job.title}</h1>
-                  {job.priority === 'urgent' && (
-                    <Badge variant="destructive" className="border-white/20">Urgent</Badge>
-                  )}
-                </div>
-                <div className="flex flex-wrap gap-4 text-primary-foreground/80 mt-2">
-                  <span className="flex items-center gap-1"><Building2 className="w-4 h-4" /> {job.industry}</span>
-                  <span className="flex items-center gap-1"><MapPin className="w-4 h-4" /> {job.location}</span>
-                  <span className="flex items-center gap-1"><Calendar className="w-4 h-4" /> Posted {new Date(job.createdAt).toLocaleDateString()}</span>
-                </div>
-              </div>
+            {/* ✨ Background Effects */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary via-primary to-[#051530]" />
+            <div className="absolute inset-0 opacity-[0.15]" style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-400/20 rounded-full blur-[100px] pointer-events-none" />
+            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-900/20 rounded-full blur-[100px] pointer-events-none" />
 
-              {/* Apply Button: Contrast against Primary Header */}
-              <Button size="lg" className="bg-background text-foreground hover:bg-background/90 font-bold shadow-lg">
-                Apply Now
-              </Button>
+            {/* ✨ Header Content (z-10 ensures it sits ABOVE the background) */}
+            <div className="relative z-10 container mx-auto max-w-7xl">
+                <Link to="/jobs" className="inline-flex items-center text-blue-100 hover:text-white mb-6 transition-colors">
+                    <ArrowLeft className="mr-2 h-4 w-4" /> Back to Jobs
+                </Link>
+
+                <div className="flex flex-col md:flex-row justify-between items-start gap-6">
+                    <div className="space-y-4">
+                        <div className="flex items-center gap-3 flex-wrap">
+                            <h1 className="text-3xl md:text-5xl font-bold drop-shadow-sm">{job.title}</h1>
+                            
+                            {/* Urgent Badge */}
+                            {job.priority === 'urgent' && (
+                                <Badge variant="destructive" className="flex items-center gap-1 h-7 animate-pulse border-white/20 bg-red-500 text-white shadow-sm">
+                                    <Flame className="w-3.5 h-3.5 fill-current" /> Urgent Hiring
+                                </Badge>
+                            )}
+                        </div>
+                        
+                        <div className="flex flex-wrap items-center gap-4 text-blue-100 text-sm md:text-base font-light">
+                            <span className="flex items-center gap-2">
+                                <Building2 className="h-4 w-4 opacity-80" /> {job.industry}
+                            </span>
+                            <span className="hidden md:inline opacity-50">•</span>
+                            <span className="flex items-center gap-2">
+                                <MapPin className="h-4 w-4 opacity-80" /> {job.location}
+                            </span>
+                            <span className="hidden md:inline opacity-50">•</span>
+                            <span className="flex items-center gap-2">
+                                <Calendar className="h-4 w-4 opacity-80" /> Posted {new Date(job.createdAt).toLocaleDateString()}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div className="flex gap-3">
+                        <Link to="/contact">
+                            {/* White Button on Blue Header */}
+                            <Button size="lg" className="bg-white text-primary hover:bg-gray-100 font-bold px-8 shadow-sm transition-transform hover:translate-y-[-2px]">
+                                Apply Now
+                            </Button>
+                        </Link>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
 
-        {/* Main Content */}
-        <div className="container mx-auto px-4 max-w-5xl -mt-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            
-            <div className="md:col-span-2 space-y-6">
-              <Card className="shadow-lg border-0">
-                <CardHeader>
-                  <CardTitle>Job Description</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4 text-gray-700 leading-relaxed">
-                  <p className="whitespace-pre-line">{job.description}</p>
-                </CardContent>
-              </Card>
-
-              <Card className="shadow-lg border-0">
-                <CardHeader>
-                  <CardTitle>Eligibility Criteria</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {/* Using Primary/10 for soft background */}
-                  <div className="flex items-start gap-3 bg-primary/5 p-4 rounded-lg text-primary-foreground/90">
-                    <CheckCircle2 className="w-5 h-5 mt-0.5 shrink-0 text-primary" />
-                    <p className="whitespace-pre-line text-foreground">{job.eligibility}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="space-y-6">
-              <Card className="shadow-lg border-0">
-                <CardHeader>
-                  <CardTitle className="text-lg">Job Overview</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <HighlightRow 
-                    icon={<DollarSign className="w-5 h-5 text-green-600" />} 
-                    label="Salary" 
-                    value={`₹${job.salaryMin.toLocaleString()} - ₹${job.salaryMax.toLocaleString()}`} 
-                  />
-                  <HighlightRow 
-                    icon={<Clock className="w-5 h-5 text-primary" />} 
-                    label="Experience" 
-                    value={`${job.experienceMin} - ${job.experienceMax} Years`} 
-                  />
-                  <HighlightRow 
-                    icon={<Building2 className="w-5 h-5 text-purple-600" />} 
-                    label="Job Type" 
-                    value={job.type.replace('-', ' ').toUpperCase()} 
-                  />
-                </CardContent>
-              </Card>
-
-              {relatedJobs.length > 0 && (
-                <div className="pt-6">
-                  <h3 className="font-bold text-gray-900 mb-4">Similar Jobs</h3>
-                  <div className="space-y-3">
-                    {relatedJobs.map((rJob) => (
-                      <Link key={rJob.id} to={`/jobs/${rJob.id}`} className="block">
-                        <div className="bg-white p-3 rounded-lg border hover:border-primary/50 transition cursor-pointer shadow-sm group">
-                          <div className="font-semibold text-gray-900 group-hover:text-primary transition-colors">{rJob.title}</div>
-                          <div className="text-xs text-gray-500 mt-1">{rJob.location}</div>
+        {/* 🟢 2. TWO-COLUMN LAYOUT */}
+        <div className="container mx-auto max-w-7xl px-4 mt-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                {/* LEFT COLUMN: Main Content */}
+                <div className="lg:col-span-2 space-y-8">
+                    
+                    {/* Description */}
+                    <section className="bg-white p-6 md:p-8 rounded-xl shadow-sm border border-gray-100">
+                        <h3 className="text-2xl font-bold text-gray-900 mb-4">Job Description</h3>
+                        <div className="prose max-w-none text-gray-600 leading-relaxed whitespace-pre-wrap">
+                            {job.description}
                         </div>
-                      </Link>
-                    ))}
-                  </div>
+                    </section>
+
+                    {/* Eligibility */}
+                    <section className="bg-white p-6 md:p-8 rounded-xl shadow-sm border border-gray-100">
+                        <h3 className="text-2xl font-bold text-gray-900 mb-6">Requirements & Eligibility</h3>
+                        <div className="grid gap-3">
+                            {job.eligibility && job.eligibility.split('\n').map((item, index) => (
+                                item.trim() && (
+                                    <div key={index} className="flex items-start gap-4 p-4 rounded-lg bg-gray-50/80 border border-gray-100">
+                                        <div className="mt-0.5">
+                                            <CheckCircle2 className="h-5 w-5 text-primary" />
+                                        </div>
+                                        <span className="text-gray-700 font-medium">{item}</span>
+                                    </div>
+                                )
+                            ))}
+                        </div>
+                    </section>
                 </div>
-              )}
+
+                {/* RIGHT COLUMN: Sticky Sidebar */}
+                <div className="lg:col-span-1">
+                    <Card className="sticky top-24 border-gray-200 shadow-xl shadow-gray-200/50 overflow-hidden">
+                        <div className="h-2 bg-primary w-full" />
+                        <CardContent className="p-6 space-y-6">
+                            <h3 className="font-bold text-lg text-gray-900">Job Overview</h3>
+                            
+                            <div className="space-y-5">
+                                <div className="flex items-start gap-4">
+                                    <div className="p-2 bg-primary/10 rounded-lg text-primary">
+                                        <Banknote className="h-5 w-5" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-gray-500 font-medium">Salary Range</p>
+                                        <p className="font-bold text-gray-900">
+                                            ₹{Number(job.salaryMin).toLocaleString()} - ₹{Number(job.salaryMax).toLocaleString()}
+                                        </p>
+                                        <p className="text-xs text-gray-400">Monthly</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-start gap-4">
+                                    <div className="p-2 bg-primary/10 rounded-lg text-primary">
+                                        <Briefcase className="h-5 w-5" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-gray-500 font-medium">Job Type</p>
+                                        <p className="font-bold text-gray-900">{formatJobType(job.type)}</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-start gap-4">
+                                    <div className="p-2 bg-primary/10 rounded-lg text-primary">
+                                        <Clock className="h-5 w-5" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-gray-500 font-medium">Experience</p>
+                                        <p className="font-bold text-gray-900">{job.experienceMin} - {job.experienceMax} Years</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-start gap-4">
+                                    <div className="p-2 bg-primary/10 rounded-lg text-primary">
+                                        <MapPin className="h-5 w-5" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-gray-500 font-medium">Location</p>
+                                        <p className="font-bold text-gray-900">{job.location}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="pt-4 border-t border-gray-100">
+                                <Link to="/contact" className="block w-full">
+                                    {/* Primary Blue Button on White Card */}
+                                    <Button className="w-full bg-primary hover:bg-primary/90 text-white text-lg h-12 shadow-md">
+                                        Apply Now
+                                    </Button>
+                                </Link>
+                                <p className="text-xs text-center text-gray-400 mt-3">
+                                    Please mention the Job Title in your application.
+                                </p>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+
             </div>
-          </div>
         </div>
       </div>
     </Layout>
-  );
-}
-
-function HighlightRow({ icon, label, value }: { icon: any, label: string, value: string }) {
-  return (
-    <div className="flex items-center gap-3 border-b border-gray-100 pb-3 last:border-0 last:pb-0">
-      <div className="bg-gray-50 p-2 rounded-full">{icon}</div>
-      <div>
-        <p className="text-xs text-gray-500 uppercase font-bold tracking-wider">{label}</p>
-        <p className="font-medium text-gray-900">{value}</p>
-      </div>
-    </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { Input } from "@/components/ui/input";
@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, MapPin, Briefcase, Filter, ArrowRight } from "lucide-react";
+import { Search, MapPin, Briefcase, Filter, ArrowRight, Flame } from "lucide-react";
 
 // Hooks & Types
 import { useJobs } from "@/hooks/useJobs";
@@ -24,6 +24,11 @@ export default function JobsPage() {
   const industries = Array.from(new Set(jobs.map((j) => j.industry)));
   const locations = Array.from(new Set(jobs.map((j) => j.location)));
 
+  // Scroll to top on load
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // Filter Logic
   const filteredJobs = useMemo(() => {
     return jobs.filter((job) => {
@@ -39,7 +44,7 @@ export default function JobsPage() {
 
   return (
     <Layout>
-      {/* 🟢 HEADER: Blue Gradient + Dot Pattern */}
+      {/* 🟢 HEADER */}
       <section className="relative min-h-[40vh] flex flex-col items-center justify-center bg-primary text-primary-foreground overflow-hidden pt-20 pb-16">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary via-primary to-[#051530]" />
         <div className="absolute inset-0 opacity-[0.15]" style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
@@ -64,7 +69,7 @@ export default function JobsPage() {
           
           <div className="flex flex-col lg:flex-row gap-8 relative z-20">
             
-            {/* 🟢 SIDEBAR FILTERS (Hidden on Mobile: 'hidden lg:block') */}
+            {/* 🟢 SIDEBAR FILTERS */}
             <aside className="hidden lg:block w-72 space-y-6 h-fit bg-white p-6 rounded-xl border border-gray-100 shadow-sm sticky top-24">
               <div className="flex items-center gap-2 font-semibold text-lg pb-4 border-b">
                 <Filter className="h-5 w-5 text-primary" /> Filter Jobs
@@ -155,23 +160,42 @@ export default function JobsPage() {
   );
 }
 
-// 🟢 JOB CARD COMPONENT (Exact UI Preserved)
+// 🟢 JOB CARD COMPONENT (FIXED TYPES)
 function JobCard({ job }: { job: Job }) {
+  
+  // Helper function to format 'full-time' to 'Full Time'
+  const formatJobType = (type: string) => {
+    return type?.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  };
+
   return (
     <Card className="hover:shadow-md transition-all duration-300 border border-gray-100 group">
       <CardContent className="p-6">
         <div className="flex flex-col md:flex-row justify-between gap-6">
           <div className="space-y-3 flex-1">
             <div className="flex items-start justify-between">
-              <div>
-                <h3 className="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">
-                  {job.title}
-                </h3>
-                <p className="text-sm text-gray-500 mt-1">{job.industry}</p>
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 flex-wrap">
+                    <h3 className="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">
+                    {job.title}
+                    </h3>
+                    
+                    {/* 🛠️ FIX 1: Use 'priority' === 'urgent' */}
+                    {job.priority === 'urgent' && (
+                        <Badge variant="destructive" className="flex items-center gap-1 text-[10px] px-1.5 h-5 animate-pulse">
+                            <Flame className="w-3 h-3 fill-current" /> Urgent
+                        </Badge>
+                    )}
+
+                    {/* 🛠️ FIX 2: Use 'type' instead of 'jobType' */}
+                    {job.type && (
+                        <Badge variant="secondary" className="text-[10px] bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-100 h-5">
+                            {formatJobType(job.type)}
+                        </Badge>
+                    )}
+                </div>
+                <p className="text-sm text-gray-500">{job.industry}</p>
               </div>
-              {job.priority === 'urgent' && (
-                <Badge variant="destructive" className="animate-pulse">Urgent</Badge>
-              )}
             </div>
             
             <div className="flex flex-wrap gap-4 text-sm text-gray-600 mt-2">
@@ -182,7 +206,7 @@ function JobCard({ job }: { job: Job }) {
                 <Briefcase className="h-3.5 w-3.5 text-primary" /> {job.experienceMin}-{job.experienceMax} Yrs
               </span>
               <span className="font-medium text-green-700 bg-green-50 px-2 py-1 rounded-md border border-green-100">
-                ₹{job.salaryMin.toLocaleString()} - ₹{job.salaryMax.toLocaleString()}
+                ₹{Number(job.salaryMin).toLocaleString()} - ₹{Number(job.salaryMax).toLocaleString()}
               </span>
             </div>
 

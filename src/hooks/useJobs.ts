@@ -1,88 +1,53 @@
-// src/hooks/useJobs.ts
 import { useState, useEffect } from "react";
-import { Job, JobStatus, JobPriority } from "../types";
-import { MOCK_JOBS } from "../mock/jobs";
-import { useToast } from "./use-toast"; // Adjust path if needed
+import { Job } from "@/types";
+import { jobService } from "@/services/jobService"; // Import the new service
+import { toast } from "@/hooks/use-toast";
 
 export function useJobs() {
   const [jobs, setJobs] = useState<Job[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(true);
 
-  const fetchJobs = async () => {
-    setIsLoading(true);
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      setJobs(MOCK_JOBS);
-    } catch (error) {
-      console.error("Failed to fetch jobs", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+  // Load jobs on mount
   useEffect(() => {
     fetchJobs();
   }, []);
 
-  const createJob = async (jobData: any) => {
+  const fetchJobs = async () => {
     setIsLoading(true);
-    
     try {
-      // Simulate API Call
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      const newJob: Job = {
-        id: `job-${Date.now()}`,
-        title: jobData.title,
-        location: jobData.location,
-        industry: jobData.industry || "General",
-        
-        description: jobData.description || "",
-        eligibility: jobData.eligibility || "",
-        
-        salaryMin: Number(jobData.salaryMin) || 0,
-        salaryMax: Number(jobData.salaryMax) || 0,
-        salaryCurrency: "INR",
-        
-        experienceMin: Number(jobData.experienceMin) || 0,
-        experienceMax: Number(jobData.experienceMax) || 0,
-        
-        type: "full-time",
-        status: "published" as JobStatus,
-        priority: "normal" as JobPriority,
-        
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-
-      setJobs((prev) => [newJob, ...prev]);
-      return true;
+      const data = await jobService.getAll();
+      setJobs(data);
     } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to create job.",
-      });
-      return false;
+      console.error("Failed to fetch jobs", error);
+      toast({ title: "Error", description: "Could not load jobs", variant: "destructive" });
     } finally {
       setIsLoading(false);
     }
   };
 
-  const deleteJob = async (id: string) => {
-    setJobs((prev) => prev.filter((job) => job.id !== id));
-    toast({
-      title: "Deleted",
-      description: "Job removed successfully.",
-    });
+  const createJob = async (jobData: any) => {
+    try {
+      await jobService.create(jobData);
+      toast({ title: "Success", description: "Job posted successfully!" });
+      fetchJobs(); // Refresh list
+      return true;
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to post job", variant: "destructive" });
+      return false;
+    }
   };
 
-  return {
-    jobs,
-    isLoading,
-    createJob,
-    deleteJob,
-    refreshJobs: fetchJobs,
+  const deleteJob = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this job?")) return;
+    
+    try {
+      await jobService.delete(id);
+      toast({ title: "Deleted", description: "Job removed successfully" });
+      fetchJobs(); // Refresh list
+    } catch (error) {
+      toast({ title: "Error", description: "Failed to delete job", variant: "destructive" });
+    }
   };
+
+  return { jobs, isLoading, createJob, deleteJob, refresh: fetchJobs };
 }
