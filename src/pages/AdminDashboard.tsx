@@ -17,6 +17,9 @@ import { useJobs } from "@/hooks/useJobs";
 import { useApplicants } from "@/hooks/useApplicants";
 import { ApplicantStatus, JobPriority, JobType } from "@/types";
 
+// 🟢 1. IMPORT LOGO
+import logo from "@/assets/favicon.jpg";
+
 export default function AdminDashboard() {
   const navigate = useNavigate();
   const [activeView, setActiveView] = useState<'jobs' | 'applicants'>('jobs');
@@ -43,9 +46,20 @@ export default function AdminDashboard() {
     <div className="flex h-screen bg-gray-50">
       {/* SIDEBAR */}
       <aside className="w-64 bg-white border-r border-gray-200 flex flex-col fixed h-full z-10">
-        <div className="p-6 border-b border-gray-100">
-          <h2 className="text-xl font-bold text-blue-700">Dharvista</h2>
-          <p className="text-xs text-gray-500 uppercase tracking-wider mt-1">Admin Portal</p>
+        
+        {/* 🟢 2. UPDATED SIDEBAR HEADER WITH LOGO */}
+        <div className="p-6 border-b border-gray-100 flex items-center gap-3">
+          <div className="h-10 w-10 overflow-hidden rounded-md border border-gray-200 shrink-0">
+             <img 
+               src={logo} 
+               alt="Dharvista Logo" 
+               className="h-full w-full object-cover" 
+             />
+          </div>
+          <div>
+             <h2 className="text-xl font-bold text-primary leading-tight">Dharvista</h2>
+             <p className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold">Admin Portal</p>
+          </div>
         </div>
         
         <nav className="flex-1 p-4 space-y-2">
@@ -112,7 +126,7 @@ export default function AdminDashboard() {
 // ==========================================
 function JobsView({ jobs, createJob, deleteJob, loading }: any) {
   
-  // ✅ Updated State to match your 'Job' interface
+  // ✅ Updated State
   const [newJob, setNewJob] = useState({
     title: "",
     location: "",
@@ -123,9 +137,10 @@ function JobsView({ jobs, createJob, deleteJob, loading }: any) {
     experienceMax: "",
     eligibility: "",
     description: "",
-    type: "full-time" as JobType,      // Default value matches JobType type
-    priority: "normal" as JobPriority, // Default value matches JobPriority type
-    status: "published" 
+    type: "full-time" as JobType,
+    priority: "normal" as JobPriority,
+    status: "published",
+    googleFormUrl: "" // 🟢 Included Google Form URL field
   });
 
   const handleAddJob = async () => {
@@ -143,12 +158,12 @@ function JobsView({ jobs, createJob, deleteJob, loading }: any) {
         eligibility: "", description: "",
         type: "full-time",
         priority: "normal",
-        status: "published"
+        status: "published",
+        googleFormUrl: ""
       });
     }
   };
 
-  // Helper to display "full-time" as "Full Time"
   const formatJobType = (type: string) => {
     return type?.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
   };
@@ -177,7 +192,6 @@ function JobsView({ jobs, createJob, deleteJob, loading }: any) {
               onChange={(e) => setNewJob({ ...newJob, location: e.target.value })} 
             />
             
-            {/* ✅ Updated Select for 'type' */}
             <Select 
               value={newJob.type} 
               onValueChange={(val) => setNewJob({...newJob, type: val as JobType})}
@@ -230,6 +244,13 @@ function JobsView({ jobs, createJob, deleteJob, loading }: any) {
                 />
             </div>
           </div>
+          
+          {/* 🟢 NEW: Google Form URL Input */}
+          <Input 
+            placeholder="Google Form Application Link (Optional)" 
+            value={newJob.googleFormUrl} 
+            onChange={(e) => setNewJob({ ...newJob, googleFormUrl: e.target.value })} 
+          />
 
           <Textarea 
             placeholder="Eligibility Criteria (e.g. B.E. Civil, Must have two-wheeler)"
@@ -246,7 +267,6 @@ function JobsView({ jobs, createJob, deleteJob, loading }: any) {
           />
 
           <div className="flex items-center justify-between">
-            {/* ✅ Updated Checkbox for 'priority' */}
             <div className="flex items-center space-x-2 border px-4 py-2 rounded-md bg-gray-50">
                 <input 
                     type="checkbox" 
@@ -284,7 +304,6 @@ function JobsView({ jobs, createJob, deleteJob, loading }: any) {
                   <div className="flex items-center gap-2">
                     <h3 className="font-semibold text-gray-900 text-lg">{job.title}</h3>
                     
-                    {/* ✅ Check job.priority instead of isUrgent */}
                     {job.priority === 'urgent' && (
                         <Badge variant="destructive" className="flex items-center gap-1 text-[10px] px-1.5 h-5">
                             <Flame className="w-3 h-3" /> Urgent
@@ -298,7 +317,6 @@ function JobsView({ jobs, createJob, deleteJob, loading }: any) {
                   <p className="text-sm text-gray-500">{job.industry} · {job.location}</p>
                   
                   <div className="text-sm text-gray-600 flex flex-wrap gap-2 mt-2">
-                    {/* ✅ Check job.type */}
                     <span className="bg-purple-50 text-purple-700 px-2 py-1 rounded text-xs border border-purple-200">
                        {formatJobType(job.type || "full-time")}
                     </span>
