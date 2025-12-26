@@ -113,7 +113,7 @@ export default function Contact() {
                 
                 {/* Address Card - Clickable Link to Map */}
                 <a 
-                    href={mapLink} 
+                    href="https://www.google.com/maps/place/DHARVISTA+HR+%26+Placement+Solutions/@9.4981691,78.1244937,17z/data=!3m1!4b1!4m6!3m5!1s0x3b013b006f2e2729:0x45cabefdceceb308!8m2!3d9.4981691!4d78.1266824!16s%2Fg%2F11c4840j4m?entry=ttu&g_ep=EgoyMDI1MDEyNi4wIKXMDSoASAFQAw%3D%3D" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="card-corporate flex items-start gap-4 opacity-0 animate-slide-up hover:bg-secondary/50 transition-colors cursor-pointer group" 
